@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="531.0" prefWidth="837.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="senaproject.ListUsersController">
+    <stylesheets>
+        <URL value="@listusersview.css" />
+    </stylesheets>
+   <children>
+      <TableView fx:id="tblSearched" layoutX="323.0" layoutY="75.0" prefHeight="131.0" prefWidth="428.0">
+        <columns>
+            <TableColumn fx:id="clmnId1" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="clmnName1" prefWidth="97.0" text="NAME" />
+            <TableColumn fx:id="clmnEmail1" prefWidth="99.0" text="EMAIL" />
+            <TableColumn fx:id="clmnAge1" prefWidth="69.0" text="AGE" />
+            <TableColumn fx:id="clmnAddress1" prefWidth="93.0" text="ADDRESS" />
+        </columns>
+      </TableView>
+      <Pane layoutY="74.0" prefHeight="326.0" prefWidth="323.0">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" prefHeight="32.0" prefWidth="85.0" text="Name:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtName" layoutX="99.0" layoutY="18.0" prefHeight="25.0" prefWidth="210.0" />
+            <Label layoutX="14.0" layoutY="141.0" prefHeight="32.0" prefWidth="85.0" text="Email:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="99.0" prefHeight="32.0" prefWidth="85.0" text="address:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="56.0" prefHeight="32.0" prefWidth="85.0" text="Age:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtEmail" layoutX="99.0" layoutY="151.0" prefHeight="25.0" prefWidth="210.0" />
+            <TextField fx:id="txtAddress" layoutX="99.0" layoutY="103.0" prefHeight="25.0" prefWidth="210.0" styleClass="mainFxmlClass" stylesheets="@listusersview.css" />
+            <TextField fx:id="txtAge" layoutX="99.0" layoutY="60.0" prefHeight="25.0" prefWidth="85.0" />
+            <Button fx:id="btnAdd" layoutX="14.0" layoutY="213.0" mnemonicParsing="false" onAction="#eventAdd" prefHeight="32.0" prefWidth="73.0" style="-fx-background-color: green;" text="Add" />
+            <Button fx:id="btnDelete" layoutX="226.0" layoutY="213.0" mnemonicParsing="false" onAction="#eventDelete" prefHeight="32.0" prefWidth="73.0" style="-fx-background-color: red;" text="Delete" />
+            <Button fx:id="btnUpdate" layoutX="123.0" layoutY="213.0" mnemonicParsing="false" onAction="#eventUpdate" prefHeight="32.0" prefWidth="73.0" style="-fx-background-color: aqua;" text="Update" />
+            <Button fx:id="btnClearForm" layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#eventClearForm" prefHeight="32.0" prefWidth="178.0" text="Clear form" />
+         </children>
+      </Pane>
+      <Label alignment="CENTER" layoutX="218.0" layoutY="14.0" prefHeight="50.0" prefWidth="299.0" text="List Users">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnLogout" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#eventLogout" prefHeight="32.0" prefWidth="85.0" text="Logout" />
+      <Label layoutX="505.0" layoutY="48.0" prefHeight="26.0" prefWidth="66.0" text="Search:" />
+      <TextField fx:id="txtSearch" layoutX="555.0" layoutY="49.0" onAction="#eventOnChanged" />
+      <TableView fx:id="tblUsers" layoutX="323.0" layoutY="75.0" onMouseClicked="#clickClmnUser" prefHeight="326.0" prefWidth="434.0">
+        <columns>
+          <TableColumn fx:id="clmnId" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="clmnName" prefWidth="97.0" text="NAME" />
+            <TableColumn fx:id="clmnEmail" prefWidth="99.0" text="EMAIL" />
+            <TableColumn fx:id="clmnAge" prefWidth="69.0" text="AGE" />
+            <TableColumn fx:id="clmnAddress" prefWidth="66.0" text="ADDRESS" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnAddTask" layoutX="368.0" layoutY="412.0" mnemonicParsing="false" onAction="#eventAddTask" prefHeight="30.0" prefWidth="73.0" text="Add task" />
+      <Button fx:id="btnListTask" layoutX="469.0" layoutY="412.0" mnemonicParsing="false" onAction="#eventListYTask" prefHeight="30.0" prefWidth="102.0" text="view tasks" />
+   </children>
+</AnchorPane>
