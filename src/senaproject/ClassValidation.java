@@ -72,4 +72,11 @@ public class ClassValidation {
         return true;
     }
 
+    public void actionNotAllowed() {
+        alert.setHeaderText("Action denied");
+        alert.setTitle("Warning: ");
+        alert.setContentText("Action not allowed");
+        alert.showAndWait();
+    }
+
 }

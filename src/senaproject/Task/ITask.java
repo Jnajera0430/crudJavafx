@@ -21,9 +21,7 @@ public class ITask {
     private IntegerProperty fk_user;
     private StringProperty fk_adminTask;
     private StringProperty state;
-
-    public ITask() {
-    }
+    private StringProperty name;
 
     public ITask(int id, String title, String description, int fk_user, String fk_adminTask, String state) {
         this.id = new SimpleIntegerProperty(id);
@@ -33,13 +31,29 @@ public class ITask {
         this.fk_adminTask = new SimpleStringProperty(fk_adminTask);
         this.state = new SimpleStringProperty(state);
     }
-
-    public ITask(String title, String description, int fk_user, String fk_adminTask, String state) {
+    public ITask(int id, String title, String description, int fk_user, String fk_adminTask, String state,String name) {
+        this.id = new SimpleIntegerProperty(id);
         this.title = new SimpleStringProperty(title);
         this.description = new SimpleStringProperty(description);
         this.fk_user = new SimpleIntegerProperty(fk_user);
         this.fk_adminTask = new SimpleStringProperty(fk_adminTask);
         this.state = new SimpleStringProperty(state);
+        this.name = new SimpleStringProperty(name);
+    }
+
+    public ITask(String title, String description, int fk_user, String fk_adminTask, StateEnum state) {
+        this.title = new SimpleStringProperty(title);
+        this.description = new SimpleStringProperty(description);
+        this.fk_user = new SimpleIntegerProperty(fk_user);
+        this.fk_adminTask = new SimpleStringProperty(fk_adminTask);
+        this.state = new SimpleStringProperty(state.getState());
+    }
+    public ITask() {
+        this.title = null;
+        this.description = null;
+        this.fk_user = null;
+        this.fk_adminTask = null;
+        this.state = null;
     }
 
     public ITask(int id) {
@@ -116,6 +130,18 @@ public class ITask {
 
     public void setState(StringProperty state) {
         this.state = state;
+    }
+    
+    public StringProperty nameProperty() {
+        return name;
+    }
+
+    public String getName() {
+        return name.get();
+    }
+
+    public void setName(StringProperty name) {
+        this.name = name;
     }
 
 }

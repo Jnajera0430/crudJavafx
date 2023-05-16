@@ -38,7 +38,7 @@
             <TextField fx:id="txtPass" layoutX="141.0" layoutY="218.0" prefHeight="35.0" prefWidth="194.0" />
             <Button fx:id="btnSignin" layoutX="146.0" layoutY="336.0" mnemonicParsing="false" onAction="#eventSignin" prefHeight="35.0" prefWidth="133.0" style="-fx-background-color: rgb(0, 179,202);" text="SIGN IN" textFill="#f8f8f8" />
             <CheckBox fx:id="checkMostrar" layoutX="146.0" layoutY="290.0" mnemonicParsing="false" onAction="#eventCheckMostrar" prefHeight="17.0" prefWidth="133.0" text="Show password" textFill="WHITE" />
-            <PasswordField fx:id="txtPassHidden" layoutX="135.0" layoutY="183.0" prefHeight="35.0" prefWidth="194.0" style="-fx-background-color: none;" />
+            <PasswordField fx:id="txtPassHidden" layoutX="141.0" layoutY="218.0" prefHeight="35.0" prefWidth="194.0" />
          </children>
       </Pane>
       <ImageView fitHeight="399.0" fitWidth="378.0" layoutX="355.0" pickOnBounds="true" preserveRatio="true">

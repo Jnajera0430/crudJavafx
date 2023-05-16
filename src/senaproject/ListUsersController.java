@@ -11,26 +11,20 @@ import javafx.fxml.Initializable;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import senaproject.Task.TaskController;
 import senaproject.Task.TaskFormController;
 
@@ -43,7 +37,7 @@ public class ListUsersController implements Initializable {
 
     private int idUser;
     Conexionpg conexion = new Conexionpg();
-    private ClassValidation validate = new ClassValidation();
+    private final ClassValidation validate = new ClassValidation();
     Connection conn = conexion.getConn();
     private final ObservableList<IUser> listUser = FXCollections.observableArrayList();
 
@@ -141,12 +135,16 @@ public class ListUsersController implements Initializable {
         try {
             String name, email, address;
             int age;
-            name = txtName.getText();
-            email = txtEmail.getText();
-            address = txtAddress.getText();
-            age = txtAge.getText().isEmpty() ? 0 : Integer.parseInt(txtAge.getText());
+            name = txtName.getText().trim();
+            email = txtEmail.getText().trim();
+            address = txtAddress.getText().trim();
+            age = txtAge.getText().trim().isEmpty() ? 0 : Integer.parseInt(txtAge.getText().trim());
 
             if (!validate.fieldsValidate(name, email, age, address)) {
+                return;
+            }
+            if(idUser != 0){
+                validate.actionNotAllowed();
                 return;
             }
             IUser user = new IUser(name, age, email, address);
@@ -169,7 +167,6 @@ public class ListUsersController implements Initializable {
     @FXML
     private void eventClearForm(ActionEvent event) {
         clearForm();
-        btnAdd.setVisible(true);
     }
 
     @FXML
@@ -195,7 +192,6 @@ public class ListUsersController implements Initializable {
         }
         listUser();
         clearForm();
-        btnAdd.setVisible(true);
     }
 
     @FXML
@@ -228,7 +224,6 @@ public class ListUsersController implements Initializable {
             statement.executeUpdate();
             listUser();
             clearForm();
-            btnAdd.setVisible(true);
 
         } catch (SQLException ex) {
             Logger.getLogger(ListUsersController.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,7 +233,7 @@ public class ListUsersController implements Initializable {
 
     @FXML
     private void clickClmnUser(MouseEvent event) {
-
+        tblUsers.getSelectionModel().clearSelection();
         tblUsers.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 insertDatos(newSelection);
@@ -249,8 +244,7 @@ public class ListUsersController implements Initializable {
         clmnAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         clmnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         clmnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        tblUsers.getSelectionModel().clearSelection();
-        btnAdd.setVisible(false);
+        
     }
 
     @FXML
@@ -264,15 +258,15 @@ public class ListUsersController implements Initializable {
                 listUserSearch.clear();
                 for (IUser user : listUser) {
 
-                    if (user.getName() != null && user.getName().toLowerCase().contains(newValue.toLowerCase())) {
+                    if (user.getName().toLowerCase().contains(newValue.toLowerCase())) {
                         listUserSearch.add(user);
-                    } else if (String.valueOf(user.getAge()) != null && String.valueOf(user.getAge()).contains(newValue.toLowerCase())) {
+                    } else if (String.valueOf(user.getAge()).contains(newValue.toLowerCase())) {
                         listUserSearch.add(user);
-                    } else if (user.getEmail() != null && user.getEmail().toLowerCase().contains(newValue.toLowerCase())) {
+                    } else if (user.getEmail().toLowerCase().contains(newValue.toLowerCase())) {
                         listUserSearch.add(user);
-                    } else if (user.getAddres()!= null && user.getAddres().toLowerCase().contains(newValue.toLowerCase())) {
+                    } else if (user.getAddres().toLowerCase().contains(newValue.toLowerCase())) {
                         listUserSearch.add(user);
-                    } else if (String.valueOf(user.getId()) != null && String.valueOf(user.getId()).contains(newValue.toLowerCase())) {
+                    } else if (String.valueOf(user.getId()).contains(newValue.toLowerCase())) {
                         listUserSearch.add(user);
                     }
                 }
@@ -342,6 +336,7 @@ public class ListUsersController implements Initializable {
             clmnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         } catch (SQLException e) {
             System.err.println("error: " + e);
+            Logger.getLogger(LoginController.class.getName()).log(Level.WARNING, null, e);
         }
     }
 
@@ -366,6 +361,10 @@ public class ListUsersController implements Initializable {
             stage.setScene(scene);
             stage.show();
             controller.insertDatosOfUser(idUser);
+            stage.setOnCloseRequest(e -> controller.eventTaskClearAClose(event));
+            Stage myStageListUser = (Stage) this.btnAddTask.getScene().getWindow();
+            conexion.dbClose();
+            myStageListUser.close();
         } catch (IOException ex) {
             Logger.getLogger(ListUsersController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -381,6 +380,13 @@ public class ListUsersController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
+            if(idUser != 0){
+                controller.listTasks(idUser);
+            }
+            stage.setOnCloseRequest(e -> controller.eventCloseWindow(event));
+            Stage myStageListUser = (Stage) this.btnAddTask.getScene().getWindow();
+            conexion.dbClose();
+            myStageListUser.close();
         } catch (IOException ex) {
             Logger.getLogger(ListUsersController.class.getName()).log(Level.SEVERE, null, ex);
         }

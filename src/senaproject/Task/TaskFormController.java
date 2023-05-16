@@ -4,6 +4,7 @@
  */
 package senaproject.Task;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,6 +18,12 @@ import senaproject.IUser;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import senaproject.ListUsersController;
+import senaproject.LoginController;
 
 /**
  * FXML Controller class
@@ -24,10 +31,10 @@ import java.util.logging.Logger;
  * @author auxsistemas3
  */
 public class TaskFormController implements Initializable {
-    
+
     Conexionpg conexion = new Conexionpg();
     Connection conn = conexion.getConn();
-    int idUser;
+    private int idUser;
     @FXML
     private TextField txtTaskUser;
     @FXML
@@ -48,26 +55,62 @@ public class TaskFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+
     @FXML
     private void eventTaskAdd(ActionEvent event) {
-        String title,description,status="PENDING",adminTask = "admin";
-        title = txtTaskTitle.getText();
-        description = txtTaskDesc.toString();
-        var task = new ITask();
-        
+        try {
+            String title, description, adminTask = "admin";
+            title = txtTaskTitle.getText();
+            description = txtTaskDesc.getText();
+            ITask task = new ITask(title, description, idUser, adminTask, StateEnum.PENDING);
+            String sql = "INSERT INTO tasks(title,description,fk_user,fk_admintask,state) VALUES(?,?,?,?,?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, task.getTitle());
+            statement.setString(2, task.getDescription());
+            statement.setInt(3, task.getFk_user());
+            statement.setString(4, task.getFk_adminTask());
+            statement.setString(5, task.getState());
+            statement.executeUpdate();
+            System.out.println("Guardado con exito...");
+
+            txtTaskTitle.setText("");
+            txtTaskDesc.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(TaskFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     @FXML
-    private void eventTaskClearAClose(ActionEvent event) {
+    public void eventTaskClearAClose(ActionEvent event) {
+        try {
+            txtTaskTitle.setText("");
+            txtTaskDesc.setText("");
+            ITask iTask = new ITask();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/ListUsersView.fxml"));
+            Parent root = loader.load();
+            ListUsersController controller = loader.getController();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+
+            stage.setOnCloseRequest(e -> controller.closeWindow());
+            Stage myStageTaskForm = (Stage) this.btnTaskClearAClose.getScene().getWindow();
+            conexion.dbClose();
+            myStageTaskForm.close();
+        } catch (IOException ex) {
+            Logger.getLogger(TaskFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-    
+
     @FXML
     private void eventTaskClearForm(ActionEvent event) {
         txtTaskTitle.setText("");
         txtTaskDesc.setText("");
+        ITask iTask = new ITask();
     }
-    
+
     public void insertDatosOfUser(int id) {
         try {
             idUser = id;
@@ -81,10 +124,10 @@ public class TaskFormController implements Initializable {
                 );
                 txtTaskUser.setText(user.getName());
             }
-            System.err.println(id);
         } catch (SQLException ex) {
             Logger.getLogger(TaskFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     
 }
