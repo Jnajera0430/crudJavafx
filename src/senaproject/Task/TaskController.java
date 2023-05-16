@@ -33,7 +33,7 @@ import senaproject.ListUsersController;
  *
  * @author auxsistemas3
  */
-public class TaskController extends TaskFormController implements Initializable {
+public class TaskController implements Initializable {
 
     Conexionpg conexion = new Conexionpg();
     Connection conn = conexion.getConn();
@@ -162,7 +162,7 @@ public class TaskController extends TaskFormController implements Initializable 
         clmnTaskState.setCellValueFactory(new PropertyValueFactory<>("address"));
     }
 
-    @Override
+
     public void insertDatos(ITask task) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/Task/TaskFormView.fxml"));
@@ -179,6 +179,26 @@ public class TaskController extends TaskFormController implements Initializable 
             myStageTaskForm.close();
         } catch (IOException ex) {
             Logger.getLogger(TaskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void closeWindow() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/ListUsersView.fxml"));
+            Parent root = loader.load();
+            ListUsersController controller = loader.getController();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+
+            stage.setOnCloseRequest(e -> controller.closeWindow());
+
+            conexion.dbClose();
+
+        } catch (IOException ex) {
+            Logger.getLogger(ListUsersController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

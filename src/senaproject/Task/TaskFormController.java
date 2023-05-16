@@ -141,19 +141,18 @@ public class TaskFormController implements Initializable {
             stage.show();
 
             stage.setOnCloseRequest(e -> controller.closeWindow());
-            
+
             conexion.dbClose();
-            
+
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void insertDatos(ITask task){
-        System.err.println("167:"+task.getTitle());
-            txtTaskTitle.setText(task.getTitle());
-            txtTaskDesc.setText(task.getDescription());
-            txtTaskUser.setText(task.getName());
-            idUser = task.getFk_user();
+
+    public void insertDatos(ITask task) {
+        txtTaskTitle.setText(task.getTitle());
+        txtTaskDesc.setText(task.getDescription());
+        txtTaskUser.setText(task.getName());
+        idUser = task.getFk_user();
     }
 }

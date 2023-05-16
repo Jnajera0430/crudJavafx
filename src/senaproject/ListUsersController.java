@@ -320,7 +320,7 @@ public class ListUsersController implements Initializable {
         try {
             tblUsers.getItems().clear();
             Statement statement = conn.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM users");
+            ResultSet result = statement.executeQuery("SELECT * FROM users ORDER BY id");
             while (result.next()) {
                 IUser user = new IUser(result.getInt("id"), result.getString("name"),
                         result.getInt("age"), result.getString("email"),
