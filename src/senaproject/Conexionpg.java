@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class Conexionpg {
 
     private Connection conn;
-    private final String url = "jdbc:postgresql://localhost:5432/sena?user=postgres&password=root";
+    private final String url = "jdbc:postgresql://localhost:5432/sena?user=postgres&password=syd123";
 
     public Connection getConn() {
         return conn;

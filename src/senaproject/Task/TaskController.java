@@ -162,23 +162,19 @@ public class TaskController extends TaskFormController implements Initializable 
         clmnTaskState.setCellValueFactory(new PropertyValueFactory<>("address"));
     }
 
+    @Override
     public void insertDatos(ITask task) {
         try {
-            txtTaskTitle.setText(task.getTitle());
-            txtTaskDesc.setText(task.getDescription());
-            txtTaskUser.setText(task.getName());
-            idUser = task.getFk_user();
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/TaskkFormView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/Task/TaskFormView.fxml"));
             Parent root = loader.load();
             TaskFormController controller = loader.getController();
+            controller.insertDatos(task);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
-            
             stage.setOnCloseRequest(e -> controller.closeWindow());
-            Stage myStageTaskForm = (Stage) this.btnColseWindow.getScene().getWindow();
+            Stage myStageTaskForm = (Stage) this.tblTaskList.getScene().getWindow();
             conexion.dbClose();
             myStageTaskForm.close();
         } catch (IOException ex) {

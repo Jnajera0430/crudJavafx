@@ -132,9 +132,9 @@ public class TaskFormController implements Initializable {
     public void closeWindow() {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/TaskListView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/Task/TaskListView.fxml"));
             Parent root = loader.load();
-            LoginController controller = loader.getController();
+            TaskController controller = loader.getController();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -148,5 +148,12 @@ public class TaskFormController implements Initializable {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    public void insertDatos(ITask task){
+        System.err.println("167:"+task.getTitle());
+            txtTaskTitle.setText(task.getTitle());
+            txtTaskDesc.setText(task.getDescription());
+            txtTaskUser.setText(task.getName());
+            idUser = task.getFk_user();
+    }
 }
