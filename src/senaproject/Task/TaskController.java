@@ -22,8 +22,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import senaproject.Conexionpg;
+import senaproject.IUser;
 import senaproject.ListUsersController;
 
 /**
@@ -31,7 +33,7 @@ import senaproject.ListUsersController;
  *
  * @author auxsistemas3
  */
-public class TaskController implements Initializable {
+public class TaskController extends TaskFormController implements Initializable {
 
     Conexionpg conexion = new Conexionpg();
     Connection conn = conexion.getConn();
@@ -141,6 +143,45 @@ public class TaskController implements Initializable {
             clmnTaskUser.setCellValueFactory(new PropertyValueFactory<>("name"));
             clmnTaskState.setCellValueFactory(new PropertyValueFactory<>("state"));
         } catch (SQLException ex) {
+            Logger.getLogger(TaskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void eventClmnClick(MouseEvent event) {
+        tblTaskList.getSelectionModel().clearSelection();
+        tblTaskList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                insertDatos(newSelection);
+            }
+        });
+        clmnTaskId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        clmnTaskTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        clmnTaskDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        clmnTaskUser.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clmnTaskState.setCellValueFactory(new PropertyValueFactory<>("address"));
+    }
+
+    public void insertDatos(ITask task) {
+        try {
+            txtTaskTitle.setText(task.getTitle());
+            txtTaskDesc.setText(task.getDescription());
+            txtTaskUser.setText(task.getName());
+            idUser = task.getFk_user();
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/TaskkFormView.fxml"));
+            Parent root = loader.load();
+            TaskFormController controller = loader.getController();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            
+            stage.setOnCloseRequest(e -> controller.closeWindow());
+            Stage myStageTaskForm = (Stage) this.btnColseWindow.getScene().getWindow();
+            conexion.dbClose();
+            myStageTaskForm.close();
+        } catch (IOException ex) {
             Logger.getLogger(TaskController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -34,19 +34,19 @@ public class TaskFormController implements Initializable {
 
     Conexionpg conexion = new Conexionpg();
     Connection conn = conexion.getConn();
-    private int idUser;
+    protected int idUser;
     @FXML
-    private TextField txtTaskUser;
+    protected TextField txtTaskUser;
     @FXML
-    private TextField txtTaskTitle;
+    protected TextField txtTaskTitle;
     @FXML
-    private TextArea txtTaskDesc;
+    protected TextArea txtTaskDesc;
     @FXML
-    private Button btnTaskAdd;
+    protected Button btnTaskAdd;
     @FXML
-    private Button btnTaskClearAClose;
+    protected Button btnTaskClearAClose;
     @FXML
-    private Button btnTaskClearForm;
+    protected Button btnTaskClearForm;
 
     /**
      * Initializes the controller class.
@@ -129,5 +129,24 @@ public class TaskFormController implements Initializable {
         }
     }
 
-    
+    public void closeWindow() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/senaProject/TaskListView.fxml"));
+            Parent root = loader.load();
+            LoginController controller = loader.getController();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+
+            stage.setOnCloseRequest(e -> controller.closeWindow());
+            
+            conexion.dbClose();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

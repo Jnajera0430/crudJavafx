@@ -14,7 +14,7 @@
         <URL value="@taskview.css" />
     </stylesheets>
    <children>
-      <TableView fx:id="tblTaskList" layoutX="27.0" layoutY="100.0" prefHeight="235.0" prefWidth="620.0">
+      <TableView fx:id="tblTaskList" layoutX="27.0" layoutY="100.0" onMouseClicked="#eventClmnClick" prefHeight="235.0" prefWidth="620.0">
         <columns>
           <TableColumn fx:id="clmnTaskId" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="clmnTaskTitle" prefWidth="75.0" text="TITLE" />
