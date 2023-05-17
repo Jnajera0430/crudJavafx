@@ -78,5 +78,12 @@ public class ClassValidation {
         alert.setContentText("Action not allowed");
         alert.showAndWait();
     }
+    
+    public void driverNotFound() {
+        alert.setHeaderText("Driver of connection not found");
+        alert.setTitle("Error: ");
+        alert.setContentText("The problem is on the file contrase.txt, modify your credentials");
+        alert.showAndWait();
+    }
 
 }
